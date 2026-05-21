@@ -37,19 +37,24 @@ SnakeCaseIDsPlugin.prototype.generateAndShow = function() {
 
 SnakeCaseIDsPlugin.prototype.addContainer = function(container) {
   var self = this;
-  var markup = '<div class="djs-popup djs-snake-case-ids"> \
+  var markup = '<div class="djs-snake-case-ids"> \
+    <div class="djs-snake-case-ids-header"> \
+      <span>Generate snake_case IDs</span> \
+      <button class="djs-snake-case-ids-toggle-btn" title="Expandir/colapsar">&#9660;</button> \
+    </div> \
     <div class="djs-snake-case-ids-container"> \
-      <button class="generate-ids">Generate IDs</button> \
-      <button class="rename-ids">Rename IDs</button> \
+      <div class="djs-snake-case-ids-actions"> \
+        <button class="generate-ids">Generate IDs</button> \
+        <button class="rename-ids">Rename IDs</button> \
+      </div> \
       <ul class="id-list"></ul> \
     </div> \
-    <div class="djs-snake-case-ids-toggle">Generate snake_case IDs</div> \
-    </div>';
+  </div>';
   this.element = domify(markup);
 
   container.appendChild(this.element);
 
-  domEvent.bind(domQuery('.djs-snake-case-ids-toggle', this.element), 'click', function() {
+  domEvent.bind(domQuery('.djs-snake-case-ids-toggle-btn', this.element), 'click', function() {
     self.toggle();
   });
   domEvent.bind(domQuery('.generate-ids', this.element), 'click', function() {
@@ -60,15 +65,20 @@ SnakeCaseIDsPlugin.prototype.addContainer = function(container) {
     self.retry = 0;
     self.renameIDs();
   });
+
+  this._makeDraggable();
 };
 
 SnakeCaseIDsPlugin.prototype.toggle = function() {
+  var btn = domQuery('.djs-snake-case-ids-toggle-btn', this.element);
   if (this.state.open) {
     domClasses(this.element).remove('open');
     this.state.open = false;
+    if (btn) btn.innerHTML = '&#9660;';
   } else {
     domClasses(this.element).add('open');
     this.state.open = true;
+    if (btn) btn.innerHTML = '&#9650;';
   }
 };
 
@@ -220,6 +230,42 @@ SnakeCaseIDsPlugin.prototype._toSnakeCase = function(str) {
     .toLowerCase();
 };
 
+
+SnakeCaseIDsPlugin.prototype._makeDraggable = function() {
+  var el = this.element;
+  var header = domQuery('.djs-snake-case-ids-header', el);
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+
+  // Convert CSS bottom-based position to top-based so drag and collapse work correctly
+  setTimeout(function() {
+    el.style.top = el.offsetTop + 'px';
+    el.style.bottom = 'auto';
+  }, 0);
+
+  header.onmousedown = function(e) {
+    if (e.target.classList.contains('djs-snake-case-ids-toggle-btn')) return;
+    e = e || window.event;
+    e.preventDefault();
+
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+
+    document.onmouseup = function() {
+      document.onmouseup = null;
+      document.onmousemove = null;
+    };
+    document.onmousemove = function(e) {
+      e = e || window.event;
+      e.preventDefault();
+      pos1 = pos3 - e.clientX;
+      pos2 = pos4 - e.clientY;
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+      el.style.top = (el.offsetTop - pos2) + 'px';
+      el.style.left = (el.offsetLeft - pos1) + 'px';
+    };
+  };
+};
 
 SnakeCaseIDsPlugin.$inject = ['elementRegistry', 'editorActions', 'canvas', 'modeling'];
 
