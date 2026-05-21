@@ -43,7 +43,7 @@ SnakeCaseIDsPlugin.prototype.addContainer = function(container) {
       <button class="rename-ids">Rename IDs</button> \
       <ul class="id-list"></ul> \
     </div> \
-    <div class="djs-snake-case-ids-toggle">snake_case IDs</div> \
+    <div class="djs-snake-case-ids-toggle">Generate snake_case IDs</div> \
     </div>';
   this.element = domify(markup);
 
