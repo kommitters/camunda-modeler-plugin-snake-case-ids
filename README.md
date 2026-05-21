@@ -22,26 +22,46 @@ Process IDs are converted to **PascalCase** (e.g. `My Process` → `MyProcess`).
 
 Element IDs are converted to **snake_case** with a type prefix:
 
-| Element Type           | Prefix  | Example                          |
-|------------------------|---------|----------------------------------|
-| User Task              | `ut_`   | `ut_approve_request`             |
-| Service Task           | `st_`   | `st_send_notification`           |
-| Script Task            | `sct_`  | `sct_calculate_total`            |
-| Business Rule Task     | `brt_`  | `brt_evaluate_policy`            |
-| Manual Task            | `mt_`   | `mt_review_document`             |
-| Send Task              | `snt_`  | `snt_send_email`                 |
-| Receive Task           | `rt_`   | `rt_receive_confirmation`        |
-| Exclusive Gateway      | `gw_`   | `gw_is_approved`                 |
-| Parallel Gateway       | `pgw_`  | `pgw_split_flow`                 |
-| Complex Gateway        | `cgw_`  | `cgw_complex_decision`           |
-| Event-Based Gateway    | `ebgw_` | `ebgw_wait_for_event`            |
-| Start Event            | `se_`   | `se_process_started`             |
-| End Event              | `ee_`   | `ee_process_completed`           |
-| Intermediate Catch Event | `ice_` | `ice_timer_elapsed`             |
-| Intermediate Throw Event | `ite_` | `ite_escalation_thrown`         |
-| Sub-Process            | `sp_`   | `sp_handle_exception`            |
-| Call Activity          | `ca_`   | `ca_invoke_subprocess`           |
-| Sequence Flow          | `sf_`   | `sf_to_approval`                 |
+| Element Type              | Prefix    | Example                           |
+|---------------------------|-----------|-----------------------------------|
+| **Tasks**                 |           |                                   |
+| Task (generic)            | `t_`      | `t_do_something`                  |
+| User Task                 | `ut_`     | `ut_approve_request`              |
+| Service Task              | `st_`     | `st_send_notification`            |
+| Script Task               | `sct_`    | `sct_calculate_total`             |
+| Business Rule Task        | `brt_`    | `brt_evaluate_policy`             |
+| Manual Task               | `mt_`     | `mt_review_document`              |
+| Send Task                 | `snt_`    | `snt_send_email`                  |
+| Receive Task              | `rt_`     | `rt_receive_confirmation`         |
+| **Gateways**              |           |                                   |
+| Exclusive Gateway         | `gw_`     | `gw_is_approved`                  |
+| Inclusive Gateway         | `igw_`    | `igw_optional_review`             |
+| Parallel Gateway          | `pgw_`    | `pgw_split_flow`                  |
+| Complex Gateway           | `cgw_`    | `cgw_complex_decision`            |
+| Event-Based Gateway       | `ebgw_`   | `ebgw_wait_for_event`             |
+| **Events**                |           |                                   |
+| Start Event               | `se_`     | `se_process_started`              |
+| End Event                 | `ee_`     | `ee_process_completed`            |
+| Intermediate Catch Event  | `ice_`    | `ice_timer_elapsed`               |
+| Intermediate Throw Event  | `ite_`    | `ite_escalation_thrown`           |
+| Boundary Event            | `be_`     | `be_error_caught`                 |
+| **Sub-processes & Activities** |      |                                   |
+| Sub-Process               | `sp_`     | `sp_handle_exception`             |
+| Ad-Hoc Sub-Process        | `ahsp_`   | `ahsp_free_form_work`             |
+| Call Activity             | `ca_`     | `ca_invoke_subprocess`            |
+| **Flows & Connections**   |           |                                   |
+| Sequence Flow             | `sf_`     | `sf_to_approval`                  |
+| Message Flow              | `mf_`     | `mf_order_confirmation`           |
+| Association               | `assoc_`  | `assoc_note_link`                 |
+| **Data**                  |           |                                   |
+| Data Object Reference     | `do_`     | `do_invoice`                      |
+| Data Store Reference      | `ds_`     | `ds_customer_db`                  |
+| **Containers**            |           |                                   |
+| Participant (Pool)        | `pool_`   | `pool_customer`                   |
+| Lane                      | `ln_`     | `ln_back_office`                  |
+| Group                     | `grp_`    | `grp_payment_steps`               |
+| **Annotations**           |           |                                   |
+| Text Annotation           | `ta_`     | `ta_sla_note`                     |
 
 IDs that would start with a digit are prefixed with `n_` (or `N` for processes) to remain valid identifiers.
 

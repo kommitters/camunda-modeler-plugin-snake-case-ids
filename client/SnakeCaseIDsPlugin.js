@@ -168,6 +168,8 @@ SnakeCaseIDsPlugin.prototype._toPascalCase = function(str) {
 
 SnakeCaseIDsPlugin.prototype._getPrefix = function(type) {
   var prefixMap = {
+    // Tasks
+    'bpmn:Task':               't_',
     'bpmn:UserTask':           'ut_',
     'bpmn:ServiceTask':        'st_',
     'bpmn:ScriptTask':         'sct_',
@@ -175,17 +177,35 @@ SnakeCaseIDsPlugin.prototype._getPrefix = function(type) {
     'bpmn:ManualTask':         'mt_',
     'bpmn:SendTask':           'snt_',
     'bpmn:ReceiveTask':        'rt_',
+    // Gateways
     'bpmn:ExclusiveGateway':   'gw_',
+    'bpmn:InclusiveGateway':   'igw_',
     'bpmn:ParallelGateway':    'pgw_',
     'bpmn:ComplexGateway':     'cgw_',
     'bpmn:EventBasedGateway':  'ebgw_',
+    // Events
     'bpmn:StartEvent':         'se_',
     'bpmn:EndEvent':           'ee_',
     'bpmn:IntermediateCatchEvent': 'ice_',
     'bpmn:IntermediateThrowEvent': 'ite_',
+    'bpmn:BoundaryEvent':      'be_',
+    // Sub-processes & activities
     'bpmn:SubProcess':         'sp_',
+    'bpmn:AdHocSubProcess':    'ahsp_',
     'bpmn:CallActivity':       'ca_',
-    'bpmn:SequenceFlow':       'sf_'
+    // Flows & connections
+    'bpmn:SequenceFlow':       'sf_',
+    'bpmn:MessageFlow':        'mf_',
+    'bpmn:Association':        'assoc_',
+    // Data
+    'bpmn:DataObjectReference': 'do_',
+    'bpmn:DataStoreReference':  'ds_',
+    // Containers
+    'bpmn:Participant':        'pool_',
+    'bpmn:Lane':               'ln_',
+    'bpmn:Group':              'grp_',
+    // Annotations
+    'bpmn:TextAnnotation':     'ta_'
   };
   return prefixMap[type] || '';
 };
