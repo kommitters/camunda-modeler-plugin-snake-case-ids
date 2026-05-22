@@ -203,13 +203,13 @@ SnakeCaseIDsPlugin.prototype._getPrefix = function(businessObject) {
     if (defType === 'timer') return 'tse_';
     if (defType === 'message') return 'mse_';
     if (defType === 'signal') return 'sse_';
-    if (defType === 'error') return 'erre_';
+    if (defType === 'error') return 'errse_';
     return 'se_';
   }
   if (type === 'bpmn:EndEvent') {
     if (defType === 'message') return 'mee_';
     if (defType === 'signal') return 'see_';
-    if (defType === 'error') return 'ere_';
+    if (defType === 'error') return 'erree_';
     return 'ee_';
   }
   if (type === 'bpmn:IntermediateCatchEvent') {

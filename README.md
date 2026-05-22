@@ -34,22 +34,22 @@ Element IDs are converted to **snake_case** with a type prefix:
 | Send Task                                 | `sndt_`    | `sndt_send_email`                 |
 | Receive Task                              | `rcvt_`    | `rcvt_receive_confirmation`       |
 | **Gateways**                              |            |                                   |
-| Exclusive Gateway                         | `gw_`      | `gw_is_approved`                  |
-| Inclusive Gateway                         | `igw_`     | `igw_optional_review`             |
-| Parallel Gateway                          | `pgw_`     | `pgw_split_flow`                  |
-| Complex Gateway                           | `cgw_`     | `cgw_complex_decision`            |
-| Event-Based Gateway                       | `ebgw_`    | `ebgw_wait_for_event`             |
+| Exclusive Gateway                         | `gtw_`      | `gtw_is_approved`                  |
+| Inclusive Gateway                         | `igtw_`     | `igtw_optional_review`             |
+| Parallel Gateway                          | `pgtw_`     | `pgtw_split_flow`                  |
+| Complex Gateway                           | `cgtw_`     | `cgtw_complex_decision`            |
+| Event-Based Gateway                       | `ebgtw_`    | `ebgtw_wait_for_event`             |`ebgw_wait_for_event`             |
 | **Start Events**                          |            |                                   |
 | Start Event (none)                        | `se_`      | `se_process_started`              |
 | Start Event (Timer)                       | `tse_`     | `tse_daily_trigger`               |
 | Start Event (Message)                     | `mse_`     | `mse_order_received`              |
 | Start Event (Signal)                      | `sse_`     | `sse_alert_received`              |
-| Start Event (Error)                       | `erre_`    | `erre_system_failure`             |
+| Start Event (Error)                       | `errse_`    | `errse_system_failure`             |
 | **End Events**                            |            |                                   |
 | End Event (none)                          | `ee_`      | `ee_process_completed`            |
 | End Event (Message)                       | `mee_`     | `mee_confirmation_sent`           |
 | End Event (Signal)                        | `see_`     | `see_alert_raised`                |
-| End Event (Error)                         | `ere_`     | `ere_process_failed`              |
+| End Event (Error)                         | `erree_`     | `erree_process_failed`              |
 | **Intermediate Catch Events**             |            |                                   |
 | Intermediate Catch Event (Timer)          | `tce_`     | `tce_wait_one_day`                |
 | Intermediate Catch Event (Message)        | `mce_`     | `mce_response_received`           |
@@ -75,7 +75,7 @@ Element IDs are converted to **snake_case** with a type prefix:
 | **Sub-processes & Activities**            |            |                                   |
 | Sub-Process                               | `subp_`    | `subp_handle_exception`           |
 | Event Sub-Process                         | `esubp_`   | `esubp_handle_error`              |
-| Ad-Hoc Sub-Process                        | `ahsubp_`    | `ahsp_free_form_work`             |
+| Ad-Hoc Sub-Process                        | `ahsp_`    | `ahsp_free_form_work`               |
 | Call Activity                             | `cat_`     | `cat_invoke_subprocess`           |
 | **Flows & Connections**                   |            |                                   |
 | Sequence Flow                             | `sf_`      | `sf_to_approval`                  |
