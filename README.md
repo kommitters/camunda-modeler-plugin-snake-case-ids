@@ -22,46 +22,74 @@ Process IDs are converted to **PascalCase** (e.g. `My Process` → `MyProcess`).
 
 Element IDs are converted to **snake_case** with a type prefix:
 
-| Element Type              | Prefix    | Example                           |
-|---------------------------|-----------|-----------------------------------|
-| **Tasks**                 |           |                                   |
-| Task (generic)            | `t_`      | `t_do_something`                  |
-| User Task                 | `ut_`     | `ut_approve_request`              |
-| Service Task              | `st_`     | `st_send_notification`            |
-| Script Task               | `sct_`    | `sct_calculate_total`             |
-| Business Rule Task        | `brt_`    | `brt_evaluate_policy`             |
-| Manual Task               | `mt_`     | `mt_review_document`              |
-| Send Task                 | `snt_`    | `snt_send_email`                  |
-| Receive Task              | `rt_`     | `rt_receive_confirmation`         |
-| **Gateways**              |           |                                   |
-| Exclusive Gateway         | `gw_`     | `gw_is_approved`                  |
-| Inclusive Gateway         | `igw_`    | `igw_optional_review`             |
-| Parallel Gateway          | `pgw_`    | `pgw_split_flow`                  |
-| Complex Gateway           | `cgw_`    | `cgw_complex_decision`            |
-| Event-Based Gateway       | `ebgw_`   | `ebgw_wait_for_event`             |
-| **Events**                |           |                                   |
-| Start Event               | `se_`     | `se_process_started`              |
-| End Event                 | `ee_`     | `ee_process_completed`            |
-| Intermediate Catch Event  | `ice_`    | `ice_timer_elapsed`               |
-| Intermediate Throw Event  | `ite_`    | `ite_escalation_thrown`           |
-| Boundary Event            | `be_`     | `be_error_caught`                 |
-| **Sub-processes & Activities** |      |                                   |
-| Sub-Process               | `sp_`     | `sp_handle_exception`             |
-| Ad-Hoc Sub-Process        | `ahsp_`   | `ahsp_free_form_work`             |
-| Call Activity             | `ca_`     | `ca_invoke_subprocess`            |
-| **Flows & Connections**   |           |                                   |
-| Sequence Flow             | `sf_`     | `sf_to_approval`                  |
-| Message Flow              | `mf_`     | `mf_order_confirmation`           |
-| Association               | `assoc_`  | `assoc_note_link`                 |
-| **Data**                  |           |                                   |
-| Data Object Reference     | `do_`     | `do_invoice`                      |
-| Data Store Reference      | `ds_`     | `ds_customer_db`                  |
-| **Containers**            |           |                                   |
-| Participant (Pool)        | `pool_`   | `pool_customer`                   |
-| Lane                      | `ln_`     | `ln_back_office`                  |
-| Group                     | `grp_`    | `grp_payment_steps`               |
-| **Annotations**           |           |                                   |
-| Text Annotation           | `ta_`     | `ta_sla_note`                     |
+| Element Type                              | Prefix     | Example                           |
+|-------------------------------------------|------------|-----------------------------------|
+| **Tasks**                                 |            |                                   |
+| Task (generic)                            | `t_`       | `t_do_something`                  |
+| User Task                                 | `ut_`      | `ut_approve_request`              |
+| Service Task                              | `srvt_`    | `srvt_send_notification`          |
+| Script Task                               | `scrt_`    | `scrt_calculate_total`            |
+| Business Rule Task                        | `brt_`     | `brt_evaluate_policy`             |
+| Manual Task                               | `mt_`      | `mt_review_document`              |
+| Send Task                                 | `sndt_`    | `sndt_send_email`                 |
+| Receive Task                              | `rcvt_`    | `rcvt_receive_confirmation`       |
+| **Gateways**                              |            |                                   |
+| Exclusive Gateway                         | `gw_`      | `gw_is_approved`                  |
+| Inclusive Gateway                         | `igw_`     | `igw_optional_review`             |
+| Parallel Gateway                          | `pgw_`     | `pgw_split_flow`                  |
+| Complex Gateway                           | `cgw_`     | `cgw_complex_decision`            |
+| Event-Based Gateway                       | `ebgw_`    | `ebgw_wait_for_event`             |
+| **Start Events**                          |            |                                   |
+| Start Event (none)                        | `se_`      | `se_process_started`              |
+| Start Event (Timer)                       | `tse_`     | `tse_daily_trigger`               |
+| Start Event (Message)                     | `mse_`     | `mse_order_received`              |
+| Start Event (Signal)                      | `sse_`     | `sse_alert_received`              |
+| Start Event (Error)                       | `erre_`    | `erre_system_failure`             |
+| **End Events**                            |            |                                   |
+| End Event (none)                          | `ee_`      | `ee_process_completed`            |
+| End Event (Message)                       | `mee_`     | `mee_confirmation_sent`           |
+| End Event (Signal)                        | `see_`     | `see_alert_raised`                |
+| End Event (Error)                         | `ere_`     | `ere_process_failed`              |
+| **Intermediate Catch Events**             |            |                                   |
+| Intermediate Catch Event (Timer)          | `tce_`     | `tce_wait_one_day`                |
+| Intermediate Catch Event (Message)        | `mce_`     | `mce_response_received`           |
+| Intermediate Catch Event (Signal)         | `sce_`     | `sce_signal_caught`               |
+| Intermediate Catch Event (Link)           | `lce_`     | `lce_jump_target`                 |
+| Intermediate Catch Event (Conditional)    | `cce_`     | `cce_condition_met`               |
+| **Intermediate Throw Events**             |            |                                   |
+| Intermediate Throw Event (none)           | `te_`      | `te_checkpoint`                   |
+| Intermediate Throw Event (Message)        | `mte_`     | `mte_notify_partner`              |
+| Intermediate Throw Event (Signal)         | `ste_`     | `ste_broadcast_signal`            |
+| Intermediate Throw Event (Link)           | `lte_`     | `lte_jump_source`                 |
+| Intermediate Throw Event (Compensation)   | `cte_`     | `cte_undo_payment`                |
+| Intermediate Throw Event (Escalation)     | `ete_`     | `ete_escalate_to_manager`         |
+| **Boundary Events**                       |            |                                   |
+| Boundary Event (Timer)                    | `tbe_`     | `tbe_timeout`                     |
+| Boundary Event (Message)                  | `mbe_`     | `mbe_cancellation_received`       |
+| Boundary Event (Error)                    | `ebe_`     | `ebe_error_caught`                |
+| Boundary Event (Escalation)               | `esbe_`    | `esbe_escalation_caught`          |
+| Boundary Event (Cancel)                   | `cbe_`     | `cbe_transaction_cancelled`       |
+| Boundary Event (Compensation)             | `cmpbe_`   | `cmpbe_undo_step`                 |
+| Boundary Event (Conditional)              | `cndbe_`   | `cndbe_condition_triggered`       |
+| Boundary Event (Signal)                   | `sbe_`     | `sbe_signal_caught`               |
+| **Sub-processes & Activities**            |            |                                   |
+| Sub-Process                               | `subp_`    | `subp_handle_exception`           |
+| Event Sub-Process                         | `esubp_`   | `esubp_handle_error`              |
+| Ad-Hoc Sub-Process                        | `ahsubp_`    | `ahsp_free_form_work`             |
+| Call Activity                             | `cat_`     | `cat_invoke_subprocess`           |
+| **Flows & Connections**                   |            |                                   |
+| Sequence Flow                             | `sf_`      | `sf_to_approval`                  |
+| Message Flow                              | `mf_`      | `mf_order_confirmation`           |
+| Association                               | `assoc_`   | `assoc_note_link`                 |
+| **Data**                                  |            |                                   |
+| Data Object Reference                     | `do_`      | `do_invoice`                      |
+| Data Store Reference                      | `ds_`      | `ds_customer_db`                  |
+| **Containers**                            |            |                                   |
+| Participant (Pool)                        | `pool_`    | `pool_customer`                   |
+| Lane                                      | `ln_`      | `ln_back_office`                  |
+| Group                                     | `grp_`     | `grp_payment_steps`               |
+| **Annotations**                           |            |                                   |
+| Text Annotation                           | `ta_`      | `ta_sla_note`                     |
 
 IDs that would start with a digit are prefixed with `n_` (or `N` for processes) to remain valid identifiers.
 

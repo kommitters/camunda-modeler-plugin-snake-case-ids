@@ -260,7 +260,7 @@ SnakeCaseIDsPlugin.prototype._getPrefix = function(businessObject) {
     'bpmn:ComplexGateway':     'cgtw_',
     'bpmn:EventBasedGateway':  'ebgtw_',
     // Sub-processes & activities
-    'bpmn:AdHocSubProcess':    'ahsp_',
+    'bpmn:AdHocSubProcess':    'ahsubp_',
     'bpmn:CallActivity':       'cat_',
     // Flows & connections
     'bpmn:SequenceFlow':       'sf_',

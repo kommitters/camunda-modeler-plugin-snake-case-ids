@@ -239,6 +239,10 @@ SnakeCaseIDsPlugin.prototype._getPrefix = function(businessObject) {
     if (defType === 'signal') return 'sbe_';
     return 'be_';
   }
+  if (type === 'bpmn:SubProcess') {
+    var isEventSubProcess = businessObject.triggeredByEvent === true || businessObject.triggeredByEvent === 'true';
+    return isEventSubProcess ? 'esubp_' : 'subp_';
+  }
 
   var prefixMap = {
     // Tasks
@@ -257,8 +261,7 @@ SnakeCaseIDsPlugin.prototype._getPrefix = function(businessObject) {
     'bpmn:ComplexGateway':     'cgtw_',
     'bpmn:EventBasedGateway':  'ebgtw_',
     // Sub-processes & activities
-    'bpmn:SubProcess':         'sp_',
-    'bpmn:AdHocSubProcess':    'ahsp_',
+    'bpmn:AdHocSubProcess':    'ahsubp_',
     'bpmn:CallActivity':       'cat_',
     // Flows & connections
     'bpmn:SequenceFlow':       'sf_',
