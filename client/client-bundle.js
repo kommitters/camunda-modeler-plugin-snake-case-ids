@@ -91,7 +91,7 @@ SnakeCaseIDsPlugin.prototype.generateIDs = function() {
     if (elements[key].type != 'label') {
       var businessObject = elements[key].element.businessObject;
       if (businessObject != null && businessObject.name) {
-        var technicalId = self._getSnakeCaseID(businessObject.name, businessObject.$type);
+        var technicalId = self._getSnakeCaseID(businessObject.name, businessObject);
         self.technicalIds[businessObject.id] = technicalId;
       }
     }
@@ -149,7 +149,8 @@ SnakeCaseIDsPlugin.prototype.renameIDs = function() {
   }
 };
 
-SnakeCaseIDsPlugin.prototype._getSnakeCaseID = function(name, type) {
+SnakeCaseIDsPlugin.prototype._getSnakeCaseID = function(name, businessObject) {
+  var type = businessObject.$type;
   name = removeDiacritics(name);
   name = name.replace(/[^\w\s]/gi, '');
 
@@ -166,7 +167,7 @@ SnakeCaseIDsPlugin.prototype._getSnakeCaseID = function(name, type) {
     name = 'n_' + name;
   }
 
-  return this._getPrefix(type) + name;
+  return this._getPrefix(businessObject) + name;
 };
 
 SnakeCaseIDsPlugin.prototype._toPascalCase = function(str) {
@@ -177,33 +178,88 @@ SnakeCaseIDsPlugin.prototype._toPascalCase = function(str) {
   return camel.charAt(0).toUpperCase() + camel.slice(1);
 };
 
-SnakeCaseIDsPlugin.prototype._getPrefix = function(type) {
+SnakeCaseIDsPlugin.prototype._getEventDefinitionType = function(businessObject) {
+  var definitions = businessObject.eventDefinitions || [];
+  if (definitions.length === 0) return 'none';
+  var defType = definitions[0].$type;
+  if (defType === 'bpmn:TimerEventDefinition') return 'timer';
+  if (defType === 'bpmn:MessageEventDefinition') return 'message';
+  if (defType === 'bpmn:SignalEventDefinition') return 'signal';
+  if (defType === 'bpmn:ErrorEventDefinition') return 'error';
+  if (defType === 'bpmn:EscalationEventDefinition') return 'escalation';
+  if (defType === 'bpmn:CompensateEventDefinition') return 'compensation';
+  if (defType === 'bpmn:LinkEventDefinition') return 'link';
+  if (defType === 'bpmn:ConditionalEventDefinition') return 'conditional';
+  if (defType === 'bpmn:CancelEventDefinition') return 'cancel';
+  return 'other';
+};
+
+SnakeCaseIDsPlugin.prototype._getPrefix = function(businessObject) {
+  var type = businessObject.$type;
+
+  var defType = this._getEventDefinitionType(businessObject);
+
+  if (type === 'bpmn:StartEvent') {
+    if (defType === 'timer') return 'tse_';
+    if (defType === 'message') return 'mse_';
+    if (defType === 'signal') return 'sse_';
+    if (defType === 'error') return 'erre_';
+    return 'se_';
+  }
+  if (type === 'bpmn:EndEvent') {
+    if (defType === 'message') return 'mee_';
+    if (defType === 'signal') return 'see_';
+    if (defType === 'error') return 'ere_';
+    return 'ee_';
+  }
+  if (type === 'bpmn:IntermediateCatchEvent') {
+    if (defType === 'timer') return 'tce_';
+    if (defType === 'message') return 'mce_';
+    if (defType === 'signal') return 'sce_';
+    if (defType === 'link') return 'lce_';
+    if (defType === 'conditional') return 'cce_';
+    return 'ice_';
+  }
+  if (type === 'bpmn:IntermediateThrowEvent') {
+    if (defType === 'message') return 'mte_';
+    if (defType === 'signal') return 'ste_';
+    if (defType === 'link') return 'lte_';
+    if (defType === 'compensation') return 'cte_';
+    if (defType === 'escalation') return 'ete_';
+    return 'te_';
+  }
+  if (type === 'bpmn:BoundaryEvent') {
+    if (defType === 'timer') return 'tbe_';
+    if (defType === 'message') return 'mbe_';
+    if (defType === 'error') return 'ebe_';
+    if (defType === 'escalation') return 'esbe_';
+    if (defType === 'cancel') return 'cbe_';
+    if (defType === 'compensation') return 'cmpbe_';
+    if (defType === 'conditional') return 'cndbe_';
+    if (defType === 'signal') return 'sbe_';
+    return 'be_';
+  }
+
   var prefixMap = {
     // Tasks
     'bpmn:Task':               't_',
     'bpmn:UserTask':           'ut_',
-    'bpmn:ServiceTask':        'st_',
-    'bpmn:ScriptTask':         'sct_',
+    'bpmn:ServiceTask':        'srvt_',
+    'bpmn:ScriptTask':         'scrt_',
     'bpmn:BusinessRuleTask':   'brt_',
     'bpmn:ManualTask':         'mt_',
-    'bpmn:SendTask':           'snt_',
-    'bpmn:ReceiveTask':        'rt_',
+    'bpmn:SendTask':           'sndt_',
+    'bpmn:ReceiveTask':        'rcvt_',
     // Gateways
-    'bpmn:ExclusiveGateway':   'gw_',
-    'bpmn:InclusiveGateway':   'igw_',
-    'bpmn:ParallelGateway':    'pgw_',
-    'bpmn:ComplexGateway':     'cgw_',
-    'bpmn:EventBasedGateway':  'ebgw_',
-    // Events
-    'bpmn:StartEvent':         'se_',
-    'bpmn:EndEvent':           'ee_',
-    'bpmn:IntermediateCatchEvent': 'ice_',
-    'bpmn:IntermediateThrowEvent': 'ite_',
-    'bpmn:BoundaryEvent':      'be_',
+    'bpmn:ExclusiveGateway':   'gtw_',
+    'bpmn:InclusiveGateway':   'igtw_',
+    'bpmn:ParallelGateway':    'pgtw_',
+    'bpmn:ComplexGateway':     'cgtw_',
+    'bpmn:EventBasedGateway':  'ebgtw_',
     // Sub-processes & activities
     'bpmn:SubProcess':         'sp_',
     'bpmn:AdHocSubProcess':    'ahsp_',
-    'bpmn:CallActivity':       'ca_',
+    'bpmn:CallActivity':       'cat_',
     // Flows & connections
     'bpmn:SequenceFlow':       'sf_',
     'bpmn:MessageFlow':        'mf_',
